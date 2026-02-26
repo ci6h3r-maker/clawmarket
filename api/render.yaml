@@ -1,0 +1,14 @@
+# Render Blueprint for ClawMarket API
+services:
+  - type: web
+    name: clawmarket-api
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+    healthCheckPath: /health
+    plan: free
