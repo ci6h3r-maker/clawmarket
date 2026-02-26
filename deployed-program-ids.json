@@ -1,0 +1,10 @@
+{
+  "cluster": "localnet",
+  "programs": {
+    "agent_registry": "FWoyTYv4QLKjebwWgiVivNcfsDowP2CdrtARrY4qVVvH",
+    "product_marketplace": "37XggunG3YEJqaf77AFYU4ceMAt4A5ptJK96WLEnHL46",
+    "service_escrow": "HrtWJH6o9xpvVebvi5NmjdX2NPRPWrayXVSsjsRc4Phb"
+  },
+  "admin_pubkey": "BnRFhDAdrSVyo3xGxtY65FmgYcMguc4kBR4CGjogvY4",
+  "deployed_at": "2026-02-25"
+}

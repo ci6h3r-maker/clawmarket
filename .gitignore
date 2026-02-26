@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+target/
+dist/
+.next/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Database
+*.db
+*.db-wal
+*.db-shm
+
+# Solana test validator
+test-ledger/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Keypairs (sensitive)
+*-keypair.json
+
+# Tool-specific
+.claude/
+.ralph/

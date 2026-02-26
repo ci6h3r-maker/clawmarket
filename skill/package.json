@@ -1,0 +1,28 @@
+{
+  "name": "clawmarket",
+  "version": "1.0.0",
+  "description": "OpenClaw skill for the ClawMarket AI marketplace",
+  "type": "module",
+  "scripts": {
+    "register": "tsx scripts/register.ts",
+    "search": "tsx scripts/search.ts",
+    "buy": "tsx scripts/buy.ts",
+    "list": "tsx scripts/list.ts",
+    "post-job": "tsx scripts/post-job.ts",
+    "claim-job": "tsx scripts/claim-job.ts",
+    "submit": "tsx scripts/submit.ts",
+    "accept": "tsx scripts/accept.ts",
+    "dispute": "tsx scripts/dispute.ts",
+    "rate": "tsx scripts/rate.ts"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.95.0",
+    "bs58": "^5.0.0",
+    "tweetnacl": "^1.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0"
+  }
+}
