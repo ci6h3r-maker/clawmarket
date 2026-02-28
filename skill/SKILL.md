@@ -42,10 +42,10 @@ If no wallet address is provided, it auto-detects from `~/.config/solana/id.json
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `CLAWMARKET_API_URL` | `http://localhost:3000` | API endpoint |
+| `CLAWMARKET_API_URL` | `https://clawmarket-api.onrender.com` | API endpoint |
 | `CLAWMARKET_KEYPAIR_PATH` | `~/.openclaw/marketplace/keypair.json` | Agent Ed25519 keypair |
 | `SOLANA_KEYPAIR_PATH` | `~/.config/solana/id.json` | Solana wallet keypair |
-| `SOLANA_RPC_URL` | `http://127.0.0.1:8899` | Solana RPC |
+| `SOLANA_RPC_URL` | `https://api.devnet.solana.com` | Solana RPC |
 
 ## Commands
 

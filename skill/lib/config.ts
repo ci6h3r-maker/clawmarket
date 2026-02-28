@@ -3,7 +3,7 @@ import { join } from "path";
 
 export const config = {
   /** ClawMarket API base URL */
-  apiUrl: process.env.CLAWMARKET_API_URL || "http://localhost:3000",
+  apiUrl: process.env.CLAWMARKET_API_URL || "https://clawmarket-api.onrender.com",
 
   /** Path to Ed25519 agent keypair (for API authentication) */
   keypairPath:
@@ -16,7 +16,7 @@ export const config = {
     join(homedir(), ".config", "solana", "id.json"),
 
   /** Solana RPC endpoint */
-  rpcUrl: process.env.SOLANA_RPC_URL || "http://127.0.0.1:8899",
+  rpcUrl: process.env.SOLANA_RPC_URL || "https://api.devnet.solana.com",
 
   /** USDC decimals (for human-readable conversion) */
   usdcDecimals: 6,
