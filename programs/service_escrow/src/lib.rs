@@ -311,7 +311,48 @@ pub mod service_escrow {
         Ok(())
     }
 
-    /// Auto-release escrowed funds to worker 24h after submission if client hasn't acted.
+    /// Admin force-refund: ClawMarket can refund buyer at any time for any reason.
+    /// Use for: scam reports, mislabeled products, seller violations.
+    /// Works on Open, Claimed, Submitted, or Disputed jobs (not Completed/Cancelled).
+    pub fn admin_force_refund(ctx: Context<AdminForceRefund>) -> Result<()> {
+        let job = &mut ctx.accounts.job;
+        require!(
+            job.status != JobStatus::Completed && job.status != JobStatus::Cancelled,
+            ErrorCode::JobAlreadyFinalized
+        );
+
+        let job_key = job.key();
+        let seeds = &[b"escrow_vault".as_ref(), job_key.as_ref(), &[ctx.bumps.escrow_vault_authority]];
+        let signer_seeds = &[&seeds[..]];
+
+        // Full refund to client — no fees taken on admin refunds
+        token::transfer(
+            CpiContext::new_with_signer(
+                ctx.accounts.token_program.to_account_info(),
+                Transfer {
+                    from: ctx.accounts.escrow_vault.to_account_info(),
+                    to: ctx.accounts.client_token_account.to_account_info(),
+                    authority: ctx.accounts.escrow_vault_authority.to_account_info(),
+                },
+                signer_seeds,
+            ),
+            job.payment,
+        )?;
+
+        job.status = JobStatus::Cancelled;
+
+        emit!(AdminForceRefunded {
+            job: job.key(),
+            client: job.client,
+            refund: job.payment,
+            admin: ctx.accounts.admin.key(),
+        });
+
+        msg!("Admin force-refunded job: {}", job.key());
+        Ok(())
+    }
+
+    /// Auto-release escrowed funds to worker 7 days after submission if client hasn't acted.
     /// Anyone can call this permissionlessly.
     pub fn auto_release(ctx: Context<AutoRelease>) -> Result<()> {
         let job = &mut ctx.accounts.job;
@@ -547,6 +588,33 @@ pub struct CancelJob<'info> {
 }
 
 #[derive(Accounts)]
+pub struct AdminForceRefund<'info> {
+    #[account(mut)]
+    pub job: Account<'info, Job>,
+
+    #[account(
+        mut,
+        seeds = [b"escrow_token", job.key().as_ref()],
+        bump,
+    )]
+    pub escrow_vault: Account<'info, TokenAccount>,
+
+    /// CHECK: PDA authority for escrow vault
+    #[account(seeds = [b"escrow_vault", job.key().as_ref()], bump)]
+    pub escrow_vault_authority: UncheckedAccount<'info>,
+
+    /// Client's token account to receive refund
+    #[account(mut, constraint = client_token_account.owner == job.client @ ErrorCode::InvalidTokenAccount)]
+    pub client_token_account: Account<'info, TokenAccount>,
+
+    /// Admin must be the platform admin
+    #[account(constraint = admin.key() == ADMIN_PUBKEY @ ErrorCode::Unauthorized)]
+    pub admin: Signer<'info>,
+
+    pub token_program: Program<'info, Token>,
+}
+
+#[derive(Accounts)]
 pub struct AutoRelease<'info> {
     #[account(mut)]
     pub job: Account<'info, Job>,
@@ -688,6 +756,14 @@ pub struct JobAutoReleased {
     pub fee: u64,
 }
 
+#[event]
+pub struct AdminForceRefunded {
+    pub job: Pubkey,
+    pub client: Pubkey,
+    pub refund: u64,
+    pub admin: Pubkey,
+}
+
 // ─── Errors ─────────────────────────────────────────────────────────────────
 
 #[error_code]
@@ -716,8 +792,10 @@ pub enum ErrorCode {
     InsufficientFunds,
     #[msg("Invalid worker record")]
     InvalidWorker,
-    #[msg("Auto-release not ready: 24h have not passed since submission")]
+    #[msg("Auto-release not ready: 7 days have not passed since submission")]
     AutoReleaseNotReady,
     #[msg("Unauthorized: only admin/arbiter can perform this action")]
     Unauthorized,
+    #[msg("Job already finalized (completed or cancelled)")]
+    JobAlreadyFinalized,
 }
