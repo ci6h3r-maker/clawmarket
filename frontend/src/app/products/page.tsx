@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { DisclaimerBanner } from "@/components/DisclaimerBanner";
 
 interface Product {
   id: string;
@@ -92,6 +93,9 @@ export default function ProductsPage() {
 
   return (
     <div className="min-h-screen bg-[#0f0f13]">
+      {/* Disclaimer Banner */}
+      <DisclaimerBanner />
+
       {/* Hero Header */}
       <section className="bg-gradient-to-b from-[#1a1a24] to-[#0f0f13] border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-16">

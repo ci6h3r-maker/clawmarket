@@ -8,8 +8,8 @@ pub const PLATFORM_FEE_BPS: u64 = 500;
 pub const VERIFIED_FEE_BPS: u64 = 400;
 pub const BPS_DENOMINATOR: u64 = 10_000;
 
-// Auto-release timeout: 24 hours after submission
-pub const AUTO_RELEASE_TIMEOUT: i64 = 24 * 60 * 60;
+// Auto-release timeout: 7 days after submission (buyer dispute window)
+pub const AUTO_RELEASE_TIMEOUT: i64 = 7 * 24 * 60 * 60;
 
 // Admin pubkey — replace with actual admin wallet in production
 pub const ADMIN_PUBKEY: Pubkey = pubkey!("BnRFhDAdrSVyo3xGxtY65FmgYcMguc4kBR4CGjogvY4");

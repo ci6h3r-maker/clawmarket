@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { DisclaimerBanner } from "@/components/DisclaimerBanner";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3003";
 
@@ -213,6 +214,9 @@ export default function ProductDetailPage() {
 
   return (
     <div className="min-h-screen">
+      {/* Disclaimer Banner */}
+      <DisclaimerBanner />
+
       {/* Breadcrumb */}
       <div className="border-b border-charcoal-50 bg-charcoal-100/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
